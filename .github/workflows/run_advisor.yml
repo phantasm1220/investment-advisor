@@ -1,0 +1,153 @@
+# .github/workflows/run_advisor.yml
+name: Investment Advisor
+
+on:
+  schedule:
+    - cron: "30 22 * * 0-4"  # 毎朝7:30 JST（月〜金）個別株スキャン ※UTC22:30=JST翌7:30
+    - cron: "30 23 * * 0-4"  # 毎朝8:30 JST（月〜金）ETFスキャン    ※UTC23:30=JST翌8:30
+
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "実行モード"
+        required: true
+        type: choice
+        default: "scan_test"
+        options:
+          - scan_test    # 個別株スキャン（上位5銘柄・動作確認）
+          - scan_full    # 個別株スキャン（上位100銘柄・本番）
+          - etf_test     # ETFスキャン（上位5件・動作確認）
+          - etf_full     # ETFスキャン（上位50件・本番）
+          - single       # 個別銘柄分析
+          - watchlist    # BUY銘柄の損益レポート送信
+      ticker:
+        description: "[singleモード] 銘柄コード（例: 7203）"
+        required: false
+        default: "7203"
+      dry_run:
+        description: "Discordに送信しない（テスト用）"
+        type: boolean
+        default: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore watchlist data (前回から復元)
+        uses: actions/download-artifact@v4
+        with:
+          name: watchlist-data
+          path: data/
+        continue-on-error: true   # 初回は存在しないため無視
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Scheduled scan (individual stocks)
+        if: github.event_name == 'schedule' && github.event.schedule == '0 0 * * 1-5'
+        env:
+          GEMINI_API_KEY:       ${{ secrets.GEMINI_API_KEY }}
+          DISCORD_WEBHOOK_URL:  ${{ secrets.DISCORD_WEBHOOK_URL }}
+          LLM_MODEL:            gemini-2.5-flash-lite
+          CCR_BASE_URL:         https://generativelanguage.googleapis.com/v1beta/openai
+        run: python main.py scan --top-n 100
+
+      - name: Scheduled scan (ETF)
+        if: github.event_name == 'schedule' && github.event.schedule == '30 0 * * 1-5'
+        env:
+          GEMINI_API_KEY:       ${{ secrets.GEMINI_API_KEY }}
+          DISCORD_WEBHOOK_URL:  ${{ secrets.DISCORD_WEBHOOK_URL }}
+          LLM_MODEL:            gemini-2.5-flash-lite
+          CCR_BASE_URL:         https://generativelanguage.googleapis.com/v1beta/openai
+        run: python main.py etf --top-n 50
+
+      - name: Manual scan_test
+        if: github.event.inputs.mode == 'scan_test'
+        env:
+          GEMINI_API_KEY:       ${{ secrets.GEMINI_API_KEY }}
+          DISCORD_WEBHOOK_URL:  ${{ secrets.DISCORD_WEBHOOK_URL }}
+          LLM_MODEL:            gemini-2.5-flash-lite
+          CCR_BASE_URL:         https://generativelanguage.googleapis.com/v1beta/openai
+        run: |
+          FLAGS="${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}"
+          python main.py scan --test $FLAGS
+
+      - name: Manual scan_full
+        if: github.event.inputs.mode == 'scan_full'
+        env:
+          GEMINI_API_KEY:       ${{ secrets.GEMINI_API_KEY }}
+          DISCORD_WEBHOOK_URL:  ${{ secrets.DISCORD_WEBHOOK_URL }}
+          LLM_MODEL:            gemini-2.5-flash-lite
+          CCR_BASE_URL:         https://generativelanguage.googleapis.com/v1beta/openai
+        run: |
+          FLAGS="${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}"
+          python main.py scan --top-n 100 $FLAGS
+
+      - name: Manual etf_test
+        if: github.event.inputs.mode == 'etf_test'
+        env:
+          GEMINI_API_KEY:       ${{ secrets.GEMINI_API_KEY }}
+          DISCORD_WEBHOOK_URL:  ${{ secrets.DISCORD_WEBHOOK_URL }}
+          LLM_MODEL:            gemini-2.5-flash-lite
+          CCR_BASE_URL:         https://generativelanguage.googleapis.com/v1beta/openai
+        run: |
+          FLAGS="${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}"
+          python main.py etf --test $FLAGS
+
+      - name: Manual etf_full
+        if: github.event.inputs.mode == 'etf_full'
+        env:
+          GEMINI_API_KEY:       ${{ secrets.GEMINI_API_KEY }}
+          DISCORD_WEBHOOK_URL:  ${{ secrets.DISCORD_WEBHOOK_URL }}
+          LLM_MODEL:            gemini-2.5-flash-lite
+          CCR_BASE_URL:         https://generativelanguage.googleapis.com/v1beta/openai
+        run: |
+          FLAGS="${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}"
+          python main.py etf --top-n 50 $FLAGS
+
+      - name: Manual single
+        if: github.event.inputs.mode == 'single'
+        env:
+          GEMINI_API_KEY:       ${{ secrets.GEMINI_API_KEY }}
+          DISCORD_WEBHOOK_URL:  ${{ secrets.DISCORD_WEBHOOK_URL }}
+          LLM_MODEL:            gemini-2.5-flash-lite
+          CCR_BASE_URL:         https://generativelanguage.googleapis.com/v1beta/openai
+        run: |
+          FLAGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            FLAGS="--dry-run"
+          fi
+          TICKER="${{ github.event.inputs.ticker }}"
+          PRICE=$(python scripts/fetch_price.py "$TICKER" 2>/dev/null || echo "")
+          if [ -n "$PRICE" ]; then
+            python main.py single --ticker "$TICKER" --price "$PRICE" $FLAGS
+          else
+            echo "株価の取得に失敗しました。銘柄コード: $TICKER"
+            exit 1
+          fi
+
+      - name: Upload watchlist data (永続化)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: watchlist-data
+          path: data/
+          retention-days: 35
+          overwrite: true
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-${{ github.run_id }}
+          path: logs/
+          retention-days: 14

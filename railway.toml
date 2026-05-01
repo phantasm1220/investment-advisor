@@ -1,0 +1,17 @@
+# railway.toml — Railway クラウド設定
+# https://railway.app
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# Cron ジョブとして毎朝9時 JST (UTC 0:00) 月〜金に実行
+cronSchedule = "0 0 * * 1-5"
+restartPolicyType = "NEVER"
+
+# Railway の Variables に以下を設定すること:
+#   GEMINI_API_KEY
+#   DISCORD_WEBHOOK_URL
+#   LLM_MODEL           = gemini-2.0-flash
+#   CCR_BASE_URL        = https://generativelanguage.googleapis.com/v1beta/openai

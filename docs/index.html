@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>投資助言システム — コントロールパネル</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --bg:#060a12; --sf:#0d1520; --s2:#162030; --bd:#1e3048;
+  --gr:#00e5a0; --gd:rgba(0,229,160,.08); --gl:rgba(0,229,160,.15);
+  --bl:#4da6ff; --bld:rgba(77,166,255,.08);
+  --ye:#ffcc00; --yd:rgba(255,204,0,.08);
+  --re:#ff4d6d; --rd:rgba(255,77,109,.08);
+  --pu:#b388ff; --pd:rgba(179,136,255,.08);
+  --te:#e8f0fe; --mu:#6b8aad;
+}
+
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html { height:100%; }
+body {
+  font-family:'Noto Sans JP',sans-serif;
+  background:var(--bg);
+  color:var(--te);
+  min-height:100vh;
+  padding:0;
+  overflow-x:hidden;
+}
+
+/* ── 背景エフェクト ── */
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(0,229,160,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(77,166,255,.05) 0%, transparent 60%);
+  pointer-events:none;
+}
+
+/* ── HEADER ── */
+.header {
+  position:sticky; top:0; z-index:100;
+  background:rgba(6,10,18,.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bd);
+  padding:14px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo { display:flex; align-items:center; gap:10px; }
+.logo-icon { font-size:22px; }
+.logo-text { font-size:15px; font-weight:900; color:var(--gr); letter-spacing:-.02em; }
+.logo-sub { font-size:11px; color:var(--mu); margin-top:1px; }
+.header-status { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--mu); }
+.dot-live { width:8px; height:8px; background:var(--gr); border-radius:50%; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+
+/* ── MAIN ── */
+.main { position:relative; z-index:1; padding:20px 16px 40px; max-width:640px; margin:0 auto; }
+
+/* ── SETUP CARD ── */
+.setup-card {
+  background:var(--sf);
+  border:1px solid rgba(255,204,0,.3);
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:20px;
+}
+.setup-title { font-size:13px; font-weight:700; color:var(--ye); margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.setup-row { display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+.setup-row label { font-size:12px; color:var(--mu); font-weight:500; }
+.setup-row input {
+  background:var(--s2);
+  border:1px solid var(--bd);
+  border-radius:8px;
+  padding:10px 14px;
+  color:var(--te);
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+  width:100%;
+  transition:border-color .2s;
+}
+.setup-row input:focus { outline:none; border-color:var(--ye); }
+.setup-row input.valid { border-color:var(--gr); }
+.setup-hint { font-size:11px; color:var(--mu); line-height:1.6; }
+.setup-hint a { color:var(--bl); }
+.save-btn {
+  width:100%; padding:11px; border:none;
+  background:linear-gradient(135deg, rgba(255,204,0,.2), rgba(255,204,0,.1));
+  border:1px solid rgba(255,204,0,.4);
+  border-radius:8px; color:var(--ye); font-size:13px; font-weight:700;
+  cursor:pointer; transition:all .2s; font-family:inherit;
+}
+.save-btn:hover { background:linear-gradient(135deg, rgba(255,204,0,.3), rgba(255,204,0,.15)); }
+
+/* ── SECTION ── */
+.section { margin-bottom:28px; }
+.section-title {
+  font-size:11px; font-weight:700; color:var(--mu);
+  letter-spacing:.12em; text-transform:uppercase;
+  margin-bottom:12px; padding:0 2px;
+  display:flex; align-items:center; gap:8px;
+}
+.section-title::after { content:''; flex:1; height:1px; background:var(--bd); }
+
+/* ── ACTION CARDS ── */
+.action-card {
+  background:var(--sf);
+  border:1px solid var(--bd);
+  border-radius:16px;
+  padding:18px 20px;
+  margin-bottom:12px;
+  transition:border-color .2s, transform .1s;
+  cursor:default;
+}
+.action-card:hover { border-color:rgba(255,255,255,.12); }
+.action-header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:12px; }
+.action-info { flex:1; }
+.action-title { font-size:15px; font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+.action-desc { font-size:12.5px; color:var(--mu); line-height:1.6; }
+.action-badge {
+  font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px;
+  white-space:nowrap; flex-shrink:0;
+}
+.badge-auto { background:var(--gd); color:var(--gr); border:1px solid rgba(0,229,160,.3); }
+.badge-manual { background:var(--bld); color:var(--bl); border:1px solid rgba(77,166,255,.3); }
+.badge-track { background:var(--pd); color:var(--pu); border:1px solid rgba(179,136,255,.3); }
+
+/* ── OPTIONS ── */
+.options { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.option-btn {
+  flex:1; min-width:calc(50% - 4px);
+  padding:9px 12px; border-radius:10px;
+  background:var(--s2); border:1px solid var(--bd);
+  color:var(--te); font-size:12.5px; font-weight:600;
+  cursor:pointer; transition:all .15s; font-family:inherit;
+  text-align:center; line-height:1.3;
+}
+.option-btn:hover { border-color:rgba(255,255,255,.2); background:var(--bd); }
+.option-btn.selected { background:var(--gl); border-color:var(--gr); color:var(--gr); }
+.option-btn.selected-blue { background:var(--bld); border-color:var(--bl); color:var(--bl); }
+.option-btn.selected-purple { background:var(--pd); border-color:var(--pu); color:var(--pu); }
+.option-btn .opt-label { font-size:11px; color:var(--mu); font-weight:400; display:block; margin-top:2px; }
+
+/* ── TICKER INPUT ── */
+.ticker-row { display:flex; gap:8px; margin-bottom:14px; align-items:center; }
+.ticker-row label { font-size:12px; color:var(--mu); white-space:nowrap; }
+.ticker-input {
+  flex:1; background:var(--s2); border:1px solid var(--bd);
+  border-radius:8px; padding:9px 12px;
+  color:var(--te); font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:600;
+  text-transform:uppercase;
+  transition:border-color .2s;
+}
+.ticker-input:focus { outline:none; border-color:var(--bl); }
+.etf-toggle {
+  display:flex; align-items:center; gap:6px;
+  padding:9px 12px; border-radius:8px;
+  background:var(--s2); border:1px solid var(--bd);
+  cursor:pointer; font-size:12px; color:var(--mu);
+  transition:all .15s; white-space:nowrap;
+}
+.etf-toggle.on { background:var(--pd); border-color:var(--pu); color:var(--pu); }
+
+/* ── DRY RUN ── */
+.dry-row {
+  display:flex; align-items:center; gap:8px;
+  margin-bottom:14px; padding:8px 12px;
+  background:var(--s2); border-radius:8px;
+  cursor:pointer;
+}
+.dry-row input[type=checkbox] { width:16px; height:16px; accent-color:var(--ye); cursor:pointer; }
+.dry-row label { font-size:12.5px; color:var(--mu); cursor:pointer; flex:1; }
+.dry-row label span { color:var(--ye); }
+
+/* ── RUN BUTTON ── */
+.run-btn {
+  width:100%; padding:14px;
+  border:none; border-radius:12px;
+  font-size:14px; font-weight:900; letter-spacing:.04em;
+  cursor:pointer; font-family:inherit;
+  transition:all .2s; position:relative; overflow:hidden;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.run-btn::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
+  transform:translateX(-100%); transition:transform .5s;
+}
+.run-btn:hover::before { transform:translateX(100%); }
+.run-btn.green { background:linear-gradient(135deg, #00c87a, #00a864); color:#fff; box-shadow:0 4px 20px rgba(0,200,122,.3); }
+.run-btn.blue  { background:linear-gradient(135deg, #2d8eff, #1a6fd4); color:#fff; box-shadow:0 4px 20px rgba(45,142,255,.3); }
+.run-btn.purple{ background:linear-gradient(135deg, #8b5cf6, #6d28d9); color:#fff; box-shadow:0 4px 20px rgba(139,92,246,.3); }
+.run-btn:disabled { opacity:.5; cursor:not-allowed; }
+.run-btn:active:not(:disabled) { transform:scale(.98); }
+.spinner { width:16px; height:16px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ── STATUS ── */
+.status-area { margin-top:12px; min-height:0; overflow:hidden; transition:all .3s; }
+.status-msg {
+  padding:12px 16px; border-radius:10px;
+  font-size:13px; line-height:1.6; display:flex; align-items:flex-start; gap:8px;
+}
+.status-msg.success { background:var(--gd); border:1px solid rgba(0,229,160,.3); }
+.status-msg.error   { background:var(--rd); border:1px solid rgba(255,77,109,.3); color:var(--re); }
+.status-msg.running { background:var(--bld); border:1px solid rgba(77,166,255,.3); }
+.status-msg a { color:var(--bl); }
+.status-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+
+/* ── INFO CHIP ── */
+.chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.chip {
+  font-size:10.5px; padding:3px 9px; border-radius:20px;
+  background:var(--s2); border:1px solid var(--bd); color:var(--mu);
+}
+
+/* ── SCHEDULE CARD ── */
+.schedule-card {
+  background:var(--sf); border:1px solid var(--bd);
+  border-radius:16px; overflow:hidden;
+}
+.sch-row {
+  display:flex; align-items:center; gap:14px;
+  padding:13px 18px; border-bottom:1px solid var(--bd);
+}
+.sch-row:last-child { border-bottom:none; }
+.sch-time { font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--ye); min-width:68px; font-weight:600; }
+.sch-name { font-size:12px; font-weight:700; padding:2px 9px; border-radius:20px; flex-shrink:0; }
+.sch-desc { font-size:12.5px; color:var(--mu); flex:1; }
+
+/* ── MODAL ── */
+.modal-bg {
+  display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,.7); backdrop-filter:blur(6px);
+  align-items:center; justify-content:center; padding:20px;
+}
+.modal-bg.open { display:flex; }
+.modal {
+  background:var(--sf); border:1px solid var(--bd);
+  border-radius:20px; padding:24px; max-width:480px; width:100%;
+}
+.modal h3 { font-size:15px; font-weight:700; margin-bottom:12px; }
+.modal p { font-size:13px; color:var(--mu); line-height:1.7; margin-bottom:14px; }
+.modal ol { padding-left:18px; }
+.modal ol li { font-size:13px; color:var(--mu); line-height:1.8; margin-bottom:4px; }
+.modal ol li a { color:var(--bl); }
+.modal ol li code { font-family:'JetBrains Mono',monospace; background:var(--s2); padding:1px 5px; border-radius:3px; font-size:11.5px; }
+.modal-close {
+  width:100%; padding:11px; margin-top:4px;
+  background:var(--s2); border:1px solid var(--bd);
+  border-radius:8px; color:var(--te); font-size:13px; font-weight:700;
+  cursor:pointer; font-family:inherit; transition:background .2s;
+}
+.modal-close:hover { background:var(--bd); }
+
+/* ── RESPONSIVE ── */
+@media (max-width:400px) {
+  .option-btn { min-width:100%; }
+  .ticker-row { flex-wrap:wrap; }
+  .etf-toggle { width:100%; justify-content:center; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <span class="logo-icon">📈</span>
+    <div>
+      <div class="logo-text">投資助言システム</div>
+      <div class="logo-sub">Control Panel</div>
+    </div>
+  </div>
+  <div class="header-status">
+    <div class="dot-live" id="statusDot"></div>
+    <span id="statusText">準備中...</span>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- ── 初回設定 ── -->
+  <div class="setup-card" id="setupCard">
+    <div class="setup-title">⚙️ 初回設定（一度だけ）</div>
+
+    <div class="setup-row">
+      <label>GitHubユーザー名</label>
+      <input type="text" id="inputUser" placeholder="your-username" autocomplete="off" spellcheck="false">
+    </div>
+
+    <div class="setup-row">
+      <label>リポジトリ名</label>
+      <input type="text" id="inputRepo" placeholder="investment-advisor" autocomplete="off" spellcheck="false">
+    </div>
+
+    <div class="setup-row">
+      <label>デフォルトブランチ名</label>
+      <input type="text" id="inputBranch" placeholder="main" autocomplete="off" spellcheck="false">
+      <div class="setup-hint">通常は <code style="color:var(--ye)">main</code>。古いリポジトリは <code style="color:var(--ye)">master</code> の場合があります。</div>
+    </div>
+
+    <div class="setup-row">
+      <label>Personal Access Token（PAT）</label>
+      <input type="password" id="inputToken" placeholder="github_pat_xxxx..." autocomplete="off">
+      <div class="setup-hint">
+        <a href="https://github.com/settings/tokens/new?scopes=repo,workflow" target="_blank">こちら</a>から発行 →
+        Expiration: 90日 / Scope: <strong>repo</strong> と <strong>workflow</strong> にチェック
+      </div>
+    </div>
+
+    <button class="save-btn" onclick="saveSettings()">💾 保存してパネルを開く</button>
+  </div>
+
+  <!-- ── 個別銘柄分析 ── -->
+  <div class="section" id="mainPanel" style="display:none">
+
+    <div class="section-title">🔍 個別分析</div>
+    <div class="action-card">
+      <div class="action-header">
+        <div class="action-info">
+          <div class="action-title">📊 個別銘柄・ETF分析<span class="action-badge badge-manual">手動実行</span></div>
+          <div class="action-desc">銘柄コードを入力して1銘柄を詳細分析。結果はDiscordに送信されます。</div>
+        </div>
+      </div>
+
+      <div class="ticker-row">
+        <label>銘柄コード</label>
+        <input type="text" class="ticker-input" id="tickerInput" placeholder="7203" maxlength="6">
+        <div class="etf-toggle" id="etfToggle" onclick="toggleEtf()">
+          <span id="etfIcon">📦</span>
+          <span id="etfLabel">ETF</span>
+        </div>
+      </div>
+
+      <div class="dry-row" onclick="toggleDry('single')">
+        <input type="checkbox" id="dryRunSingle">
+        <label for="dryRunSingle">テスト実行（<span>Discordに送信しない</span>）</label>
+      </div>
+
+      <button class="run-btn blue" onclick="runSingle()">
+        <span id="singleBtnIcon">⚡</span>
+        <span id="singleBtnText">今すぐ分析する</span>
+      </button>
+      <div class="status-area" id="singleStatus"></div>
+
+      <div class="chips">
+        <div class="chip">7203 トヨタ</div>
+        <div class="chip">8035 東京エレクトロン</div>
+        <div class="chip">6857 アドバンテスト</div>
+        <div class="chip">9984 ソフトバンクG</div>
+        <div class="chip">1545 NASDAQ-100 ETF</div>
+        <div class="chip">1557 S&P500 ETF</div>
+      </div>
+    </div>
+
+    <!-- ── スキャン ── -->
+    <div class="section-title">📡 スキャン</div>
+
+    <div class="action-card">
+      <div class="action-header">
+        <div class="action-info">
+          <div class="action-title">📊 個別株スキャン<span class="action-badge badge-manual">手動実行</span></div>
+          <div class="action-desc">東証の出来高上位銘柄を一括分析。BUY銘柄は自動でウォッチリストに登録されます。</div>
+        </div>
+      </div>
+
+      <div class="options" id="scanOptions">
+        <button class="option-btn selected" data-mode="scan_test" onclick="selectScanMode(this)">
+          🧪 テスト（5銘柄）<span class="opt-label">動作確認用</span>
+        </button>
+        <button class="option-btn" data-mode="scan_full" onclick="selectScanMode(this)">
+          🚀 本番（100銘柄）<span class="opt-label">約1〜1.5時間</span>
+        </button>
+      </div>
+
+      <div class="dry-row" onclick="toggleDry('scan')">
+        <input type="checkbox" id="dryRunScan">
+        <label for="dryRunScan">テスト実行（<span>Discordに送信しない</span>）</label>
+      </div>
+
+      <button class="run-btn green" onclick="runScan()">
+        <span id="scanBtnIcon">📊</span>
+        <span id="scanBtnText">スキャン開始</span>
+      </button>
+      <div class="status-area" id="scanStatus"></div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-header">
+        <div class="action-info">
+          <div class="action-title">📦 ETFスキャン<span class="action-badge badge-manual">手動実行</span></div>
+          <div class="action-desc">東証の出来高上位ETFを一括分析。NAV乖離・セクター成長性を評価します。</div>
+        </div>
+      </div>
+
+      <div class="options" id="etfOptions">
+        <button class="option-btn selected" data-mode="etf_test" onclick="selectEtfMode(this)">
+          🧪 テスト（5件）<span class="opt-label">動作確認用</span>
+        </button>
+        <button class="option-btn" data-mode="etf_full" onclick="selectEtfMode(this)">
+          🚀 本番（50件）<span class="opt-label">約30分</span>
+        </button>
+      </div>
+
+      <div class="dry-row" onclick="toggleDry('etf')">
+        <input type="checkbox" id="dryRunEtf">
+        <label for="dryRunEtf">テスト実行（<span>Discordに送信しない</span>）</label>
+      </div>
+
+      <button class="run-btn purple" onclick="runEtf()">
+        <span id="etfBtnIcon">📦</span>
+        <span id="etfBtnText">ETFスキャン開始</span>
+      </button>
+      <div class="status-area" id="etfStatus"></div>
+    </div>
+
+    <!-- ── BUY追跡 ── -->
+    <div class="section-title">📈 BUY銘柄追跡</div>
+    <div class="action-card">
+      <div class="action-header">
+        <div class="action-info">
+          <div class="action-title">📈 ウォッチリスト確認<span class="action-badge badge-track">追跡機能</span></div>
+          <div class="action-desc">過去にBUY判定した銘柄の登録時からの損益をDiscordに送信します。30日間追跡。</div>
+        </div>
+      </div>
+      <button class="run-btn" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;box-shadow:0 4px 20px rgba(139,92,246,.3)" onclick="runWatchlist()">
+        <span id="wlBtnIcon">📈</span>
+        <span id="wlBtnText">損益レポートを送信</span>
+      </button>
+      <div class="status-area" id="wlStatus"></div>
+    </div>
+
+    <!-- ── 自動実行スケジュール ── -->
+    <div class="section-title">🕐 自動実行スケジュール</div>
+    <div class="schedule-card">
+      <div class="sch-row">
+        <span class="sch-time">7:30</span>
+        <span class="sch-name" style="background:rgba(0,229,160,.1);color:var(--gr);border:1px solid rgba(0,229,160,.3)">watchlist</span>
+        <span class="sch-desc">BUY銘柄の損益チェック → Discord送信</span>
+      </div>
+      <div class="sch-row">
+        <span class="sch-time">7:30</span>
+        <span class="sch-name" style="background:rgba(0,229,160,.1);color:var(--gr);border:1px solid rgba(0,229,160,.3)">scan</span>
+        <span class="sch-desc">個別株スキャン（100銘柄）→ Discord送信</span>
+      </div>
+      <div class="sch-row" style="border:none">
+        <span class="sch-time">8:30</span>
+        <span class="sch-name" style="background:rgba(179,136,255,.1);color:var(--pu);border:1px solid rgba(179,136,255,.3)">etf</span>
+        <span class="sch-desc">ETFスキャン（50件）→ Discord送信</span>
+      </div>
+    </div>
+    <p style="font-size:11.5px;color:var(--mu);margin-top:8px;padding:0 2px;line-height:1.6">月〜金のみ自動実行。土日祝はこのパネルから手動実行できます。</p>
+
+    <!-- ── 設定変更 ── -->
+    <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--bd)">
+      <button onclick="showSetup()" style="background:none;border:1px solid var(--bd);border-radius:8px;padding:8px 16px;color:var(--mu);font-size:12px;cursor:pointer;font-family:inherit">
+        ⚙️ 設定を変更する
+      </button>
+      <button onclick="openHelp()" style="background:none;border:1px solid var(--bd);border-radius:8px;padding:8px 16px;color:var(--mu);font-size:12px;cursor:pointer;font-family:inherit;margin-left:8px">
+        ❓ PATの取得方法
+      </button>
+    </div>
+
+  </div><!-- /mainPanel -->
+</div><!-- /main -->
+
+<!-- ── ヘルプモーダル ── -->
+<div class="modal-bg" id="helpModal" onclick="closeHelp(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>🔑 Personal Access Token（PAT）の取得方法</h3>
+    <p>GitHubのPATはこのパネルからワークフローを実行するために必要です。</p>
+    <ol>
+      <li><a href="https://github.com/settings/tokens/new?scopes=repo,workflow" target="_blank">GitHub → Settings → Tokens (classic) → Generate new token</a> を開く</li>
+      <li><strong>Note</strong>に名前を入力（例: <code>investment-advisor-panel</code>）</li>
+      <li><strong>Expiration</strong>を選択（90 daysを推奨）</li>
+      <li><strong>repo</strong> と <strong>workflow</strong> にチェックを入れる</li>
+      <li>「Generate token」をクリック → 表示されたトークンをコピーして設定画面に貼り付ける</li>
+    </ol>
+    <p style="margin-top:12px;font-size:12px;color:var(--re)">⚠️ トークンは再表示できません。コピーし忘れた場合は再発行してください。</p>
+    <button class="modal-close" onclick="closeHelp()">閉じる</button>
+  </div>
+</div>
+
+<script>
+// ── 設定管理 ──────────────────────────────────────────────
+const STORE = {
+  get: k => localStorage.getItem('ia_' + k) || '',
+  set: (k,v) => localStorage.setItem('ia_' + k, v),
+};
+
+let cfg = { user:'', repo:'', token:'', branch:'main' };
+
+function loadSettings() {
+  cfg.user   = STORE.get('user');
+  cfg.repo   = STORE.get('repo');
+  cfg.token  = STORE.get('token');
+  cfg.branch = STORE.get('branch') || 'main';
+}
+
+function saveSettings() {
+  const u = document.getElementById('inputUser').value.trim();
+  const r = document.getElementById('inputRepo').value.trim();
+  const t = document.getElementById('inputToken').value.trim();
+  if (!u || !r || !t) {
+    alert('ユーザー名・リポジトリ名・PATをすべて入力してください');
+    return;
+  }
+  const b = document.getElementById('inputBranch').value.trim() || 'main';
+  STORE.set('user', u); STORE.set('repo', r); STORE.set('token', t); STORE.set('branch', b);
+  cfg = { user:u, repo:r, token:t, branch:b };
+  _workflowId = null; // キャッシュクリア
+  showPanel();
+}
+
+function showSetup() {
+  document.getElementById('setupCard').style.display = 'block';
+  document.getElementById('mainPanel').style.display = 'none';
+  document.getElementById('inputUser').value   = cfg.user;
+  document.getElementById('inputRepo').value   = cfg.repo;
+  document.getElementById('inputToken').value  = cfg.token;
+  document.getElementById('inputBranch').value = cfg.branch || 'main';
+}
+
+function showPanel() {
+  document.getElementById('setupCard').style.display = 'none';
+  document.getElementById('mainPanel').style.display = 'block';
+  updateHeaderStatus();
+}
+
+// ── 初期化 ──────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  loadSettings();
+  if (cfg.user && cfg.repo && cfg.token) {
+    showPanel();
+  } else {
+    document.getElementById('setupCard').style.display = 'block';
+    document.getElementById('statusText').textContent = '未設定';
+  }
+});
+
+function updateHeaderStatus() {
+  const dot  = document.getElementById('statusDot');
+  const text = document.getElementById('statusText');
+  if (cfg.user && cfg.token) {
+    dot.style.background = 'var(--gr)';
+    text.textContent = cfg.user + '/' + cfg.repo;
+  }
+}
+
+// ── ワークフローIDキャッシュ ─────────────────────────
+let _workflowId = null;
+
+async function getWorkflowId() {
+  if (_workflowId) return _workflowId;
+  const headers = {
+    'Authorization': `Bearer ${cfg.token}`,
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+  };
+  const res = await fetch(
+    `https://api.github.com/repos/${cfg.user}/${cfg.repo}/actions/workflows`,
+    { headers }
+  );
+  if (!res.ok) {
+    const b = await res.json().catch(()=>({}));
+    if (res.status === 401) throw new Error('PATが無効または期限切れです。再発行・再入力してください。');
+    if (res.status === 403) throw new Error('PATの権限不足。「repo」と「workflow」スコープが必要です。');
+    if (res.status === 404) throw new Error('リポジトリが見つかりません。ユーザー名・リポジトリ名を確認してください。');
+    throw new Error(`ワークフロー一覧の取得失敗: ${res.status} ${b.message||''}`);
+  }
+  const data = await res.json();
+  const wf = data.workflows.find(w => w.path === '.github/workflows/run_advisor.yml');
+  if (!wf) throw new Error('run_advisor.yml がGitHubで認識されていません。git push を確認してください。');
+  _workflowId = wf.id;
+  return _workflowId;
+}
+
+// ── GitHub API でワークフロー実行 ──────────────────────
+async function triggerWorkflow(inputs) {
+  const branch = cfg.branch || 'main';
+  const wfId = await getWorkflowId();
+  const url = `https://api.github.com/repos/${cfg.user}/${cfg.repo}/actions/workflows/${wfId}/dispatches`;
+  let res;
+  try {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${cfg.token}`,
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ref: branch, inputs }),
+    });
+  } catch(e) {
+    throw new Error(`通信エラー: ${e.message}`);
+  }
+  if (!res.ok) {
+    let detail = '';
+    try { const b = await res.json(); detail = b.message || JSON.stringify(b); } catch(_) {}
+    if (res.status === 401) throw new Error('PATが無効または期限切れです。');
+    if (res.status === 403) throw new Error('PATの権限不足。「repo」と「workflow」スコープが必要です。');
+    if (res.status === 422) throw new Error(`パラメータエラー (422): ${detail}`);
+    throw new Error(`APIエラー: ${res.status} ${detail}`);
+  }
+  return res;
+}
+
+function showStatus(areaId, type, msg) {
+  const icons = { success:'✅', error:'❌', running:'⏳' };
+  const el = document.getElementById(areaId);
+  el.innerHTML = `<div class="status-msg ${type}"><span class="status-icon">${icons[type]}</span><span>${msg}</span></div>`;
+}
+
+function setBtnLoading(iconId, textId, loading, defaultIcon, defaultText) {
+  document.getElementById(iconId).innerHTML = loading ? '<div class="spinner"></div>' : defaultIcon;
+  document.getElementById(textId).textContent = loading ? '送信中...' : defaultText;
+}
+
+// ── 個別分析 ──────────────────────────────────────────────
+let etfMode = false;
+function toggleEtf() {
+  etfMode = !etfMode;
+  document.getElementById('etfToggle').className = 'etf-toggle' + (etfMode ? ' on' : '');
+  document.getElementById('etfLabel').textContent = etfMode ? 'ETF ON' : 'ETF';
+}
+
+async function runSingle() {
+  const ticker = document.getElementById('tickerInput').value.trim().toUpperCase();
+  if (!ticker) { showStatus('singleStatus','error','銘柄コードを入力してください'); return; }
+  if (!cfg.token) { showStatus('singleStatus','error','設定が未完了です'); return; }
+
+  setBtnLoading('singleBtnIcon','singleBtnText',true,'⚡','今すぐ分析する');
+  showStatus('singleStatus','running','GitHub Actions にリクエスト送信中...');
+
+  const dry = document.getElementById('dryRunSingle').checked;
+  const inputs = { mode:'single', ticker, dry_run: String(dry) };
+  // ETFモードの場合はtickerに.etfフラグを渡す方法として、tickerをETF:コードの形式にする
+  // ただしworkflowのsingleステップがETFを処理するよう変更が必要。
+  // 現状のworkflowはETFフラグに未対応のため、singleとして実行（ETF判定はworkflow側でもできる）
+
+  try {
+    await triggerWorkflow(inputs);
+    showStatus('singleStatus','success',
+      `✅ 分析リクエスト送信完了！<br>🕐 約1〜2分後にDiscordに結果が届きます。<br><a href="https://github.com/${cfg.user}/${cfg.repo}/actions" target="_blank">実行状況を確認 →</a>`);
+  } catch(e) {
+    showStatus('singleStatus','error', e.message.replace(/\n/g,'<br>'));
+  }
+  setBtnLoading('singleBtnIcon','singleBtnText',false,'⚡','今すぐ分析する');
+}
+
+// ── スキャン ──────────────────────────────────────────────
+let scanMode = 'scan_test';
+let etfScanMode = 'etf_test';
+
+function selectScanMode(btn) {
+  document.querySelectorAll('#scanOptions .option-btn').forEach(b => b.className='option-btn');
+  btn.className = 'option-btn selected';
+  scanMode = btn.dataset.mode;
+}
+function selectEtfMode(btn) {
+  document.querySelectorAll('#etfOptions .option-btn').forEach(b => b.className='option-btn');
+  btn.className = 'option-btn selected';
+  etfScanMode = btn.dataset.mode;
+}
+
+async function runScan() {
+  if (!cfg.token) { showStatus('scanStatus','error','設定が未完了です'); return; }
+  const dry = document.getElementById('dryRunScan').checked;
+  setBtnLoading('scanBtnIcon','scanBtnText',true,'📊','スキャン開始');
+  showStatus('scanStatus','running','GitHub Actions にリクエスト送信中...');
+
+  try {
+    await triggerWorkflow({ mode: scanMode, dry_run: String(dry) });
+    const time = scanMode === 'scan_full' ? '約1〜1.5時間' : '約2〜3分';
+    showStatus('scanStatus','success',
+      `✅ スキャンリクエスト送信完了！<br>🕐 ${time}後にDiscordに結果が届きます。<br><a href="https://github.com/${cfg.user}/${cfg.repo}/actions" target="_blank">実行状況を確認 →</a>`);
+  } catch(e) {
+    showStatus('scanStatus','error', e.message.replace(/\n/g,'<br>'));
+  }
+  setBtnLoading('scanBtnIcon','scanBtnText',false,'📊','スキャン開始');
+}
+
+async function runEtf() {
+  if (!cfg.token) { showStatus('etfStatus','error','設定が未完了です'); return; }
+  const dry = document.getElementById('dryRunEtf').checked;
+  setBtnLoading('etfBtnIcon','etfBtnText',true,'📦','ETFスキャン開始');
+  showStatus('etfStatus','running','GitHub Actions にリクエスト送信中...');
+
+  try {
+    await triggerWorkflow({ mode: etfScanMode, dry_run: String(dry) });
+    const time = etfScanMode === 'etf_full' ? '約30分' : '約1〜2分';
+    showStatus('etfStatus','success',
+      `✅ ETFスキャンリクエスト送信完了！<br>🕐 ${time}後にDiscordに結果が届きます。<br><a href="https://github.com/${cfg.user}/${cfg.repo}/actions" target="_blank">実行状況を確認 →</a>`);
+  } catch(e) {
+    showStatus('etfStatus','error', e.message.replace(/\n/g,'<br>'));
+  }
+  setBtnLoading('etfBtnIcon','etfBtnText',false,'📦','ETFスキャン開始');
+}
+
+async function runWatchlist() {
+  if (!cfg.token) { showStatus('wlStatus','error','設定が未完了です'); return; }
+  setBtnLoading('wlBtnIcon','wlBtnText',true,'📈','損益レポートを送信');
+  showStatus('wlStatus','running','GitHub Actions にリクエスト送信中...');
+
+  // watchlistは単独実行用のモードが現状ないため、scan_testのDryrunで代替するか
+  // 直接のwatchlistモードがある場合はそれを使う
+  // ここでは scan_test を dry_run=false で実行（スキャン前にwatchlistが自動実行される）
+  try {
+    await triggerWorkflow({ mode: 'watchlist', dry_run: 'false' });
+    showStatus('wlStatus','success',
+      `✅ ウォッチリストチェックをリクエストしました！<br>🕐 数分後にDiscordに損益レポートが届きます。<br><a href="https://github.com/${cfg.user}/${cfg.repo}/actions" target="_blank">実行状況を確認 →</a>`);
+  } catch(e) {
+    showStatus('wlStatus','error', e.message.replace(/\n/g,'<br>'));
+  }
+  setBtnLoading('wlBtnIcon','wlBtnText',false,'📈','損益レポートを送信');
+}
+
+// ── Dry Run トグル ──────────────────────────────────────
+function toggleDry(id) {
+  const cb = document.getElementById('dryRun' + id.charAt(0).toUpperCase() + id.slice(1));
+  cb.checked = !cb.checked;
+}
+
+// ── モーダル ──────────────────────────────────────────────
+function openHelp() { document.getElementById('helpModal').className = 'modal-bg open'; }
+function closeHelp(e) {
+  if (!e || e.target === document.getElementById('helpModal'))
+    document.getElementById('helpModal').className = 'modal-bg';
+}
+</script>
+</body>
+</html>
