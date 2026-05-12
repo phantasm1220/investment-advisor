@@ -1,0 +1,39 @@
+{
+  "entries": [
+    {
+      "ticker": "2502",
+      "name": "アサヒグループホールディングス",
+      "registered_date": "2026-05-12",
+      "registered_price": 1519.0,
+      "verdict": "BUY",
+      "confidence": 0.73,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "HOLD",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.6
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.75
+          }
+        },
+        "composite_confidence": 0.73,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズの成長性懸念はあるものの、PERの割安性、テクニカルの売られすぎからの反発期待、機関投資家の強いBUY推奨（目標株価+37.5%）が支持材料。円高リスクは考慮するが、リスクリワードは",
+        "catalyst": "",
+        "conflict": ""
+      }
+    }
+  ],
+  "updated": "2026-05-12T14:44:41.583463"
+}
