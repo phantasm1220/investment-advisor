@@ -1,0 +1,27 @@
+# APIキー・シークレット（絶対にコミットしない）
+.env
+.default
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# ログ
+logs/
+*.log
+
+# アーカイブ
+*.tar.gz
+*.zip
+
+# IDE
+.vscode/
+.idea/
+*.swp
+data/*.json
+!data/jp_names_master.json
+!data/buy_watchlist.json

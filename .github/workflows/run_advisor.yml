@@ -1,0 +1,192 @@
+# .github/workflows/run_advisor.yml
+name: Investment Advisor
+
+on:
+  schedule:
+    - cron: "30 22 * * 1-5"   # 7:30 JST（火〜土）個別株スキャン
+    - cron: "30 23 * * 1-5"   # 8:30 JST（火〜土）ETFスキャン
+    - cron: "0 14 * * 0-5"    # 23:00 JST（日〜金）ニュースピック
+
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "実行モード"
+        required: true
+        type: choice
+        default: "scan_test"
+        options:
+          - scan_test
+          - scan_full
+          - scan_300
+          - scan_500
+          - etf_test
+          - etf_full
+          - single
+          - watchlist
+          - update_names
+          - news_pick
+      ticker:
+        description: "[singleモード] 銘柄コード（例: 7203）"
+        required: false
+        default: "7203"
+
+env:
+  GEMINI_API_KEY:      ${{ secrets.GEMINI_API_KEY }}
+  DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  LLM_MODEL:           gemini-2.5-flash-lite
+  CCR_BASE_URL:        https://generativelanguage.googleapis.com/v1beta/openai
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure data directory exists
+        run: mkdir -p data
+
+      - name: Restore watchlist data
+        uses: actions/download-artifact@v4
+        with:
+          name: watchlist-data
+          path: data/
+        continue-on-error: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate JP names master (初回のみ)
+        run: |
+          if [ ! -f data/jp_names_master.json ]; then
+            echo "jp_names_master.json が存在しないため生成します..."
+            python scripts/generate_names_master.py
+            if [ -f data/jp_names_master.json ]; then
+              git config user.name  "github-actions[bot]"
+              git config user.email "github-actions[bot]@users.noreply.github.com"
+              git add data/jp_names_master.json
+              git diff --cached --quiet && echo "変更なし" || \
+                (git commit -m "chore: generate jp_names_master.json [skip ci]" && git push)
+            fi
+          else
+            echo "jp_names_master.json は既に存在します（スキップ）"
+          fi
+        continue-on-error: true
+
+      # ── 定時: 個別株スキャン（7:30 JST = UTC 22:30）────────────
+      - name: Scheduled stock scan
+        if: github.event.schedule == '30 22 * * 1-5'
+        run: |
+          if [ -f data/buy_watchlist.json ]; then
+            python main.py watchlist || echo "ウォッチリスト空またはエラー（続行）"
+          fi
+          python main.py scan --top-n 100
+
+      # ── 定時: ETFスキャン（8:30 JST = UTC 23:30）───────────────
+      - name: Scheduled ETF scan
+        if: github.event.schedule == '30 23 * * 1-5'
+        run: python main.py etf --top-n 50
+
+      # ── 定時: ニュースピック（23:00 JST = UTC 14:00）───────────
+      - name: Scheduled news pick
+        if: github.event.schedule == '0 14 * * 0-5'
+        run: python main.py news_pick
+        continue-on-error: true
+
+      # ── 手動実行 ───────────────────────────────────────────────
+      - name: Manual watchlist
+        if: github.event.inputs.mode == 'watchlist'
+        run: python main.py watchlist
+
+      - name: Manual news_pick
+        if: github.event.inputs.mode == 'news_pick'
+        run: python main.py news_pick
+
+      - name: Manual update_names
+        if: github.event.inputs.mode == 'update_names'
+        run: |
+          python scripts/generate_names_master.py
+          if [ -f data/jp_names_master.json ]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add data/jp_names_master.json
+            git diff --cached --quiet && echo "変更なし" || \
+              (git commit -m "chore: update jp_names_master.json [skip ci]" && git push)
+          fi
+
+      - name: Manual scan_test
+        if: github.event.inputs.mode == 'scan_test'
+        run: python main.py scan --test
+
+      - name: Manual scan_full
+        if: github.event.inputs.mode == 'scan_full'
+        run: python main.py scan --top-n 100
+
+      - name: Manual scan_300
+        if: github.event.inputs.mode == 'scan_300'
+        run: python main.py scan --top-n 300
+
+      - name: Manual scan_500
+        if: github.event.inputs.mode == 'scan_500'
+        run: python main.py scan --top-n 500
+
+      - name: Manual etf_test
+        if: github.event.inputs.mode == 'etf_test'
+        run: python main.py etf --test
+
+      - name: Manual etf_full
+        if: github.event.inputs.mode == 'etf_full'
+        run: python main.py etf --top-n 50
+
+      - name: Manual single
+        if: github.event.inputs.mode == 'single'
+        run: |
+          TICKER="${{ github.event.inputs.ticker }}"
+          PRICE=$(python scripts/fetch_price.py "$TICKER" 2>/dev/null || echo "")
+          if [ -n "$PRICE" ]; then
+            python main.py single --ticker "$TICKER" --price "$PRICE"
+          else
+            echo "株価取得失敗: $TICKER"
+            exit 1
+          fi
+
+      # ── 後処理 ────────────────────────────────────────────────
+      - name: Upload watchlist data
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: watchlist-data
+          path: data/
+          retention-days: 35
+          overwrite: true
+        continue-on-error: true
+
+      - name: Commit watchlist to repository
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f data/buy_watchlist.json 2>/dev/null || echo "buy_watchlist.json なし"
+          git add -f data/buy_watchlist_archive.json 2>/dev/null || echo "archive なし"
+          git status --short
+          git diff --cached --quiet && echo "変更なし（スキップ）" || \
+            (git commit -m "chore: update buy_watchlist.json [skip ci]" && git push && echo "ウォッチリスト保存完了")
+        continue-on-error: true
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-${{ github.run_id }}
+          path: logs/
+          retention-days: 14
+        continue-on-error: true
