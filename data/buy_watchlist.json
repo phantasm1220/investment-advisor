@@ -33,7 +33,41 @@
         "catalyst": "",
         "conflict": ""
       }
+    },
+    {
+      "ticker": "6702",
+      "name": "富士通",
+      "registered_date": "2026-05-13",
+      "registered_price": 3356.0,
+      "verdict": "BUY",
+      "confidence": 0.705,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.6
+          },
+          "technical": {
+            "verdict": "HOLD",
+            "confidence": 0.6
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.75
+          }
+        },
+        "composite_confidence": 0.705,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズの割安感、ROEの高さ、情報通信セクターへの資金流入、機関投資家のBUY推奨がポジティブ要因。マクロの円高、テクニカルの弱気シグナルは懸念材料。機関投資家のコンセンサスはOVERWE",
+        "catalyst": "",
+        "conflict": ""
+      }
     }
   ],
-  "updated": "2026-05-12T14:44:41.583463"
+  "updated": "2026-05-13T08:42:25.689993"
 }
