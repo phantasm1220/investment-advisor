@@ -67,7 +67,109 @@
         "catalyst": "",
         "conflict": ""
       }
+    },
+    {
+      "ticker": "7013",
+      "name": "ＩＨＩ",
+      "registered_date": "2026-05-14",
+      "registered_price": 2679.5,
+      "verdict": "BUY",
+      "confidence": 0.789,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.75
+          },
+          "macro": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.6
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.75
+          }
+        },
+        "composite_confidence": 0.789,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズ、マクロ、機関投資家の見解がBUYで一致し、総合確信度0.789と高い。PERの割安感、ROEの高さ、成長加速が強み。機関投資家もBUY推奨100%と支持。テクニカルは売られすぎだが",
+        "catalyst": "",
+        "conflict": ""
+      }
+    },
+    {
+      "ticker": "7011",
+      "name": "三菱重工業",
+      "registered_date": "2026-05-14",
+      "registered_price": 4162.0,
+      "verdict": "BUY",
+      "confidence": 0.768,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "macro": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.6
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.75
+          }
+        },
+        "composite_confidence": 0.768,
+        "registered_verdict": "BUY",
+        "rationale": "4エージェント全てがBUY推奨。ファンダメンタルズ、マクロ、機関投資家の分析がポジティブに一致。テクニカルは底打ちの兆候。機関投資家のコンセンサスはOVERWEIGHT、スマートマネーはNEUTRAL",
+        "catalyst": "",
+        "conflict": ""
+      }
+    },
+    {
+      "ticker": "4568",
+      "name": "第一三共",
+      "registered_date": "2026-05-14",
+      "registered_price": 2582.0,
+      "verdict": "BUY",
+      "confidence": 0.709,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.58
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "institutional": {
+            "verdict": "STRONG_BUY",
+            "confidence": 0.85
+          }
+        },
+        "composite_confidence": 0.709,
+        "registered_verdict": "BUY",
+        "rationale": "機関投資家のSTRONG_BUY比率の高さ（76.5%）と大幅な目標株価上昇余地(+76.2%)が最大の強み。ファンダメンタルズの割安感(PER)とテクニカルの売られすぎ水準からの反発期待もポジティブ",
+        "catalyst": "",
+        "conflict": ""
+      }
     }
   ],
-  "updated": "2026-05-13T08:42:25.689993"
+  "updated": "2026-05-14T08:36:05.745687"
 }
