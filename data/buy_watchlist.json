@@ -169,7 +169,143 @@
         "catalyst": "",
         "conflict": ""
       }
+    },
+    {
+      "ticker": "5802",
+      "name": "住友電気工業",
+      "registered_date": "2026-05-21",
+      "registered_price": 10730.0,
+      "verdict": "BUY",
+      "confidence": 0.772,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "BUY",
+            "confidence": 0.68
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.6
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.6
+          }
+        },
+        "composite_confidence": 0.772,
+        "registered_verdict": "BUY",
+        "rationale": "4エージェント全てがBUY推奨で、ファンダメンタルズ、マクロ、テクニカル、機関投資家の分析が概ね一致。PERの割安感、ROEの高さ、円安メリット、半導体関連テーマといった追い風が評価される。機関投資家",
+        "catalyst": "",
+        "conflict": ""
+      }
+    },
+    {
+      "ticker": "6857",
+      "name": "アドバンテスト",
+      "registered_date": "2026-05-21",
+      "registered_price": 26745.0,
+      "verdict": "BUY",
+      "confidence": 0.72,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.6
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          }
+        },
+        "composite_confidence": 0.72,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズ、テクニカル、機関投資家の見解がBUYで一致。マクロは中立ながら円安が追い風。目標株価+21.1%に対し、リスクリワードは良好。機関投資家のコンセンサスはOVERWEIGHT、スマー",
+        "catalyst": "",
+        "conflict": ""
+      }
+    },
+    {
+      "ticker": "6758",
+      "name": "ソニーグループ",
+      "registered_date": "2026-05-21",
+      "registered_price": 3554.0,
+      "verdict": "BUY",
+      "confidence": 0.716,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.58
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          }
+        },
+        "composite_confidence": 0.716,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズ、テクニカル、機関投資家エージェントともにBUY判断であり、総合確信度0.716。マクロはHOLDだがリスクはMEDIUM。PERの割安感とアナリストの目標株価（+31.9%）が魅力",
+        "catalyst": "",
+        "conflict": ""
+      }
+    },
+    {
+      "ticker": "5803",
+      "name": "フジクラ",
+      "registered_date": "2026-05-21",
+      "registered_price": 4501.0,
+      "verdict": "BUY",
+      "confidence": 0.711,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.75
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.6
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "institutional": {
+            "verdict": "STRONG_BUY",
+            "confidence": 0.75
+          }
+        },
+        "composite_confidence": 0.711,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズと機関投資家の分析がBUY/STRONG_BUYで一貫しており、確信度0.711を達成。テクニカルも回復の兆し。マクロは中立だが、円安メリット限定的。D/Eレシオと半導体テーマ親和性",
+        "catalyst": "",
+        "conflict": ""
+      }
     }
   ],
-  "updated": "2026-05-20T10:49:09.089344"
+  "updated": "2026-05-21T11:39:34.425177"
 }
