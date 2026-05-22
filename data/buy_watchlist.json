@@ -305,7 +305,75 @@
         "catalyst": "",
         "conflict": ""
       }
+    },
+    {
+      "ticker": "8136",
+      "name": "サンリオ",
+      "registered_date": "2026-05-22",
+      "registered_price": 864.8,
+      "verdict": "BUY",
+      "confidence": 0.702,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "STRONG_BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.58
+          },
+          "technical": {
+            "verdict": "HOLD",
+            "confidence": 0.6
+          },
+          "institutional": {
+            "verdict": "STRONG_BUY",
+            "confidence": 0.75
+          }
+        },
+        "composite_confidence": 0.702,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズは割安感、高利益率を示し、機関投資家もSTRONG_BUYコンセンサスで72.8%の上昇余地を予測。スマートマネーは中立だが、レーティングは安定。テクニカルの弱含みが懸念だが、ファン",
+        "catalyst": "",
+        "conflict": ""
+      }
+    },
+    {
+      "ticker": "6869",
+      "name": "シスメックス",
+      "registered_date": "2026-05-22",
+      "registered_price": 1409.0,
+      "verdict": "BUY",
+      "confidence": 0.7,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "HOLD",
+            "confidence": 0.7
+          },
+          "macro": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          }
+        },
+        "composite_confidence": 0.7,
+        "registered_verdict": "BUY",
+        "rationale": "機関投資家の100%BUY推奨、目標株価+22.7%という強気なコンセンサスが、円安・半導体テーマというマクロ環境、テクニカルの52週高値ブレイクアウトと合致。ファンダメンタルズのROEの低さは懸念だ",
+        "catalyst": "",
+        "conflict": ""
+      }
     }
   ],
-  "updated": "2026-05-21T11:39:34.425177"
+  "updated": "2026-05-22T11:13:58.747700"
 }
