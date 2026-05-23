@@ -373,7 +373,177 @@
         "catalyst": "",
         "conflict": ""
       }
+    },
+    {
+      "ticker": "8801",
+      "name": "三井不動産",
+      "registered_date": "2026-05-23",
+      "registered_price": 1480.0,
+      "verdict": "BUY",
+      "confidence": 0.73,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.6
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.75
+          }
+        },
+        "composite_confidence": 0.73,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズ、テクニカル、機関投資家エージェントがBUY推奨。PERの割安感とアナリスト目標株価の乖離が魅力的。マクロは中立だが、円安メリットは限定的。機関投資家のコンセンサスはOVERWEIG",
+        "catalyst": "",
+        "conflict": ""
+      }
+    },
+    {
+      "ticker": "7012",
+      "name": "川崎重工業",
+      "registered_date": "2026-05-23",
+      "registered_price": 2971.0,
+      "verdict": "BUY",
+      "confidence": 0.71,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "HOLD",
+            "confidence": 0.7
+          },
+          "macro": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.75
+          }
+        },
+        "composite_confidence": 0.71,
+        "registered_verdict": "BUY",
+        "rationale": "マクロ、テクニカル、機関投資家エージェントがBUYを示唆。特に防衛セクターのテーマ性、52週高値ブレイク、出来高急増は強い買いシグナル。機関投資家のコンセンサスOverweightと+26.5%の目標",
+        "catalyst": "",
+        "conflict": ""
+      }
+    },
+    {
+      "ticker": "7532",
+      "name": "パン・パシフィック・インターナショナルホールディングス",
+      "registered_date": "2026-05-23",
+      "registered_price": 866.9,
+      "verdict": "BUY",
+      "confidence": 0.706,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.58
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.65
+          }
+        },
+        "composite_confidence": 0.706,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズとテクニカル、機関投資家の見解が一致し、BUY推奨。PERの割安感とEPS成長加速が魅力。機関投資家もBUY推奨過半数だが、目標株価レンジに分散あり。スマートマネーは中立だが、リスク",
+        "catalyst": "",
+        "conflict": ""
+      }
+    },
+    {
+      "ticker": "4543",
+      "name": "テルモ",
+      "registered_date": "2026-05-23",
+      "registered_price": 2393.5,
+      "verdict": "BUY",
+      "confidence": 0.706,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.58
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.65
+          }
+        },
+        "composite_confidence": 0.706,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズ、テクニカル、機関投資家の見解はいずれもBUYを示唆。特にEPS成長率の高さとアナリスト目標株価の上昇余地が魅力的。RSIの買われすぎには注意が必要だが、総合確信度は0.7を超えた。",
+        "catalyst": "",
+        "conflict": ""
+      }
+    },
+    {
+      "ticker": "5838",
+      "name": "楽天銀行",
+      "registered_date": "2026-05-23",
+      "registered_price": 4847.0,
+      "verdict": "BUY",
+      "confidence": 0.702,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.58
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.6
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.75
+          }
+        },
+        "composite_confidence": 0.702,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズ、テクニカル、機関投資家の分析がBUYで一致。割安性、高い収益性・成長性、売られすぎ水準からの反発期待が根拠。機関投資家のコンセンサス（OVERWEIGHT）とレーティング動向（ST",
+        "catalyst": "",
+        "conflict": ""
+      }
     }
   ],
-  "updated": "2026-05-22T11:13:58.747700"
+  "updated": "2026-05-23T08:11:46.483056"
 }
