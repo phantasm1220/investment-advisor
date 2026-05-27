@@ -543,7 +543,41 @@
         "catalyst": "",
         "conflict": ""
       }
+    },
+    {
+      "ticker": "3697",
+      "name": "ＳＨＩＦＴ",
+      "registered_date": "2026-05-27",
+      "registered_price": 697.6,
+      "verdict": "BUY",
+      "confidence": 0.73,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.6
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.75
+          }
+        },
+        "composite_confidence": 0.73,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズ、テクニカル、機関投資家の分析がBUYを示唆。PERは割安でROEも高水準。テクニカルも良好な買いサイン。機関投資家のコンセンサスもBUY。スマートマネーはニュートラルだが、リスクリ",
+        "catalyst": "",
+        "conflict": ""
+      }
     }
   ],
-  "updated": "2026-05-23T08:11:46.483056"
+  "updated": "2026-05-27T12:05:08.766619"
 }
