@@ -577,7 +577,109 @@
         "catalyst": "",
         "conflict": ""
       }
+    },
+    {
+      "ticker": "4901",
+      "name": "富士フイルムホールディングス",
+      "registered_date": "2026-05-29",
+      "registered_price": 3322.0,
+      "verdict": "BUY",
+      "confidence": 0.724,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.6
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.6
+          }
+        },
+        "composite_confidence": 0.724,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズとテクニカルはBUY推奨で、確信度も高い。機関投資家もBUYコンセンサスで、スマートマネーは中立だが、レーティングは安定。マクロは中立だが、円安メリットは限定的。テクニカルの強い上昇",
+        "catalyst": "",
+        "conflict": ""
+      }
+    },
+    {
+      "ticker": "3231",
+      "name": "野村不動産ホールディングス",
+      "registered_date": "2026-05-29",
+      "registered_price": 895.0,
+      "verdict": "BUY",
+      "confidence": 0.71,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.6
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.7
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.65
+          }
+        },
+        "composite_confidence": 0.71,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズの割安感とEPS大幅成長、テクニカルの売られすぎサインと52週高値ブレイクアウトがBUYを支持。機関投資家も目標株価乖離+30%とポジティブだが、スマートマネーはニュートラル。マクロ",
+        "catalyst": "",
+        "conflict": ""
+      }
+    },
+    {
+      "ticker": "9602",
+      "name": "東宝",
+      "registered_date": "2026-05-29",
+      "registered_price": 1228.5,
+      "verdict": "BUY",
+      "confidence": 0.705,
+      "sector": "不明",
+      "analysis_memo": {
+        "agents": {
+          "fundamentals": {
+            "verdict": "BUY",
+            "confidence": 0.8
+          },
+          "macro": {
+            "verdict": "HOLD",
+            "confidence": 0.6
+          },
+          "technical": {
+            "verdict": "BUY",
+            "confidence": 0.6
+          },
+          "institutional": {
+            "verdict": "BUY",
+            "confidence": 0.75
+          }
+        },
+        "composite_confidence": 0.705,
+        "registered_verdict": "BUY",
+        "rationale": "ファンダメンタルズの割安感（予想PER 5.0倍）と機関投資家の強い買い推奨（BUY換算+0.14、目標株価+41.0%）が、テクニカルの売られすぎ水準からの反転期待と合致。マクロの逆風は限定的。リス",
+        "catalyst": "",
+        "conflict": ""
+      }
     }
   ],
-  "updated": "2026-05-28T12:10:43.199735"
+  "updated": "2026-05-29T00:01:50.932662"
 }
